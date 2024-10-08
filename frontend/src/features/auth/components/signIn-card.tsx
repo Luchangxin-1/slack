@@ -11,11 +11,22 @@ import { Separator } from "@/components/ui/separator";
 import React from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { SignInFlow } from "../type";
+import { SignInData, SignInFlow } from "../type";
+import { useForm } from "react-hook-form";
+import { LoginAPI } from "@/server/auth";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
 const SignInCard = ({ setState }: SignInCardProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInData>();
+  const onSubmit = (data: SignInData) => {
+    console.log(data);
+    LoginAPI(data);
+  };
   return (
     <Card className="h-[500px] p-8">
       <CardHeader className="">
@@ -24,19 +35,17 @@ const SignInCard = ({ setState }: SignInCardProps) => {
       <CardDescription className="mt-3">
         Use your email or another service to continue
       </CardDescription>
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
           disabled={false}
-          value=""
-          onChange={() => {}}
+          {...register("email")}
           placeholder="Email"
           required
           className="mt-4"
         />
         <Input
           disabled={false}
-          value=""
-          onChange={() => {}}
+          {...register("password")}
           placeholder="Password"
           type="password"
           required

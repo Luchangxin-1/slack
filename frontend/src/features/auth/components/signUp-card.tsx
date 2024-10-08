@@ -13,6 +13,7 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { SignInFlow, SignUpData } from "../type";
 import { useForm } from "react-hook-form";
+import { SignUpAPI } from "@/server/auth";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
@@ -22,10 +23,12 @@ const SignUpCard = ({ setState }: SignInCardProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<SignUpData>();
+
   const [signUpData, setSignUpData] = useState<SignUpData>();
   const onSubmit = (data: SignUpData) => {
     console.log(data);
     setSignUpData(data);
+    SignUpAPI(data);
   };
   return (
     <Card className="h-[500px] p-8">

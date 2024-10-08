@@ -1,6 +1,11 @@
 export type SignInFlow = "signIn" | "signUp";
-export type SignUpData = {
+
+type AuthData = {
   email: string;
   password: string;
-  confirmPassword: string;
 };
+export type SignInData = AuthData;
+
+export type SignUpData = {
+  confirmPassword: string;
+} & AuthData;
