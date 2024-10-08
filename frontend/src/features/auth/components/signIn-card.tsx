@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,24 +9,36 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import React, { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { SignInData, SignInFlow } from "../type";
 import { useForm } from "react-hook-form";
 import { LoginAPI } from "@/server/auth";
+import Spinner from "@/components/spinner";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
 const SignInCard = ({ setState }: SignInCardProps) => {
+  //hooks
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignInData>();
-  const onSubmit = (data: SignInData) => {
+  //method
+  const onSubmit = async (data: SignInData) => {
+    setLoading(true);
     console.log(data);
-    LoginAPI(data);
+    try {
+      const resp = await LoginAPI(data);
+      console.log(resp);
+      resp.success ? console.log(resp.message) : console.log(resp.error);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
   };
   return (
     <Card className="h-[500px] p-8">
@@ -52,14 +65,14 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         />
         <Button
           type="submit"
-          className="w-full mt-5"
+          className="w-full mt-5 gap-4"
           size="lg"
-          disabled={false}
+          disabled={loading}
         >
-          Continue
+          {!loading ? "Continue" : <Spinner />}
         </Button>
       </form>
-      <Separator />
+      <Separator className="mt-2" />
       <div className="flex mt-3 flex-col gap-y-2.5">
         <Button
           className="w-full relative"
