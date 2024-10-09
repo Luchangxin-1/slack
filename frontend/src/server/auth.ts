@@ -26,12 +26,28 @@ export const LoginAPI = async (data: SignInData) => {
   }
 };
 
-export const SignUpAPI = async (data: SignInData) => {
+export const SignUpAPI = async (data: SignUpData) => {
   try {
+    console.log(data);
     const response = await axios.post("http://localhost:9000/signUp", data);
-    console.log(response);
+    return response.data;
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.error(
+          `Error: ${error.response.data.message || "Unknown error"}`
+        );
+        throw new Error(error.response.data.message || "Login failed");
+      } else if (error.request) {
+        console.error("No response received from server");
+        throw new Error("No response from server");
+      } else {
+        console.error("Error setting up request:", error.message);
+        throw new Error(error.message);
+      }
+    } else {
+      console.error("Unexpected error:", error);
+      throw new Error("Unexpected error occurred");
+    }
   }
-  return;
 };

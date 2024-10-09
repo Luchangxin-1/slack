@@ -7,5 +7,11 @@ type AuthData = {
 export type SignInData = AuthData;
 
 export type SignUpData = {
+  // confirmPassword: string;
+  name: string;
+} & AuthData;
+
+export type SignUpFormData = {
   confirmPassword: string;
+  name: string;
 } & AuthData;

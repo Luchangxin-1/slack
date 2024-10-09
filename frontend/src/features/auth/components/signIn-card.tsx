@@ -16,12 +16,15 @@ import { SignInData, SignInFlow } from "../type";
 import { useForm } from "react-hook-form";
 import { LoginAPI } from "@/server/auth";
 import Spinner from "@/components/spinner";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
 const SignInCard = ({ setState }: SignInCardProps) => {
   //hooks
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -30,11 +33,21 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   //method
   const onSubmit = async (data: SignInData) => {
     setLoading(true);
-    console.log(data);
     try {
       const resp = await LoginAPI(data);
-      console.log(resp);
-      resp.success ? console.log(resp.message) : console.log(resp.error);
+      console.log(resp.success);
+
+      if (resp.success === "true") {
+        toast({
+          title: resp.message,
+        });
+        router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: resp.message,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
