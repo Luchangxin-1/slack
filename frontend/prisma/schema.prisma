@@ -15,13 +15,11 @@ datasource db {
 
 
 model users {
-  id           String      @id  @default(cuid())
+  id           Int      @id  @default(autoincrement())
   name         String   
   email        String   @unique 
   hash_password String  
   is_active    Boolean  @default(false)
-  accounts      Account[]
-  sessions      Session[]
   @@index([name])
   @@index([email])
 }
@@ -37,7 +35,6 @@ model Account {
   scope              String?
   id_token           String?
   session_state      String?
-  user               users?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -47,7 +44,6 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         users?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

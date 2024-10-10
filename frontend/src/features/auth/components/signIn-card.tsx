@@ -54,7 +54,17 @@ const SignInCard = ({ setState }: SignInCardProps) => {
     //   console.log(error);
     // }
     const res = await handleCredentialsSignin(data);
-    console.log(res);
+    if (res == undefined) {
+      toast({
+        title: "Login Successfully!",
+      });
+      router.push("/");
+    } else {
+      toast({
+        variant: "destructive",
+        title: res.message,
+      });
+    }
 
     setLoading(false);
   };

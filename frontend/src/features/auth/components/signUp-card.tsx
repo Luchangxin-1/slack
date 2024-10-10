@@ -50,10 +50,15 @@ const SignUpCard = ({ setState }: SignInCardProps) => {
     data.confirmPassword === data.password
       ? setErrorPassword(false)
       : handlePasswordMismatch();
+    if (data.confirmPassword !== data.password) {
+      setLoading(false);
+      return;
+    }
     const { confirmPassword, ...rest } = data;
     setSignUpData(rest);
+    console.log(rest);
     try {
-      const resp = await SignUpAPI(signUpData as SignUpData);
+      const resp = await SignUpAPI(rest as unknown as SignUpData);
       console.log(resp);
       if (resp.success === "true") {
         toast({

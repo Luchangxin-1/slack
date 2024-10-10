@@ -1,7 +1,6 @@
 import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
-import { signInSchema } from "@/lib/zod";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 export const { handlers, signIn, signOut, auth } = NextAuth({

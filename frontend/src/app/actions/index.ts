@@ -11,16 +11,27 @@ export async function handleCredentialsSignin({
   password,
 }: handleCredentialsSigninProps) {
   try {
-    await signIn("credentials", { email, password, redirectTo: "/" });
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: "/",
+    });
+    return {
+      success: true,
+      message: "login successfully!",
+    };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
           return {
+            success: false,
+
             message: "Invalid credentials",
           };
         default:
           return {
+            success: false,
             message: "Something went wrong.",
           };
       }

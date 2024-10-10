@@ -27,9 +27,23 @@ export const LoginAPI = async (data: SignInData) => {
 };
 
 export const SignUpAPI = async (data: SignUpData) => {
+  console.log("Request data:", data);
+
   try {
-    console.log(data);
-    const response = await axios.post("http://localhost:9000/signUp", data);
+    const response = await axios.post(
+      "http://localhost:9000/signUp",
+      {
+        email: data.email, // 使用传入的 data 参数
+        name: data.name,
+        password: data.password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -37,7 +51,7 @@ export const SignUpAPI = async (data: SignUpData) => {
         console.error(
           `Error: ${error.response.data.message || "Unknown error"}`
         );
-        throw new Error(error.response.data.message || "Login failed");
+        throw new Error(error.response.data.message || "Sign up failed");
       } else if (error.request) {
         console.error("No response received from server");
         throw new Error("No response from server");
