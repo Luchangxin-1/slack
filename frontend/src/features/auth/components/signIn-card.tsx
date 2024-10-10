@@ -18,6 +18,8 @@ import { LoginAPI } from "@/server/auth";
 import Spinner from "@/components/spinner";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { signIn } from "../../../../auth";
+import { handleCredentialsSignin } from "@/app/actions";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
@@ -33,24 +35,27 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   //method
   const onSubmit = async (data: SignInData) => {
     setLoading(true);
-    try {
-      const resp = await LoginAPI(data);
-      console.log(resp.success);
+    // try {
+    //   const resp = await LoginAPI(data);
+    //   console.log(resp.success);
 
-      if (resp.success === "true") {
-        toast({
-          title: resp.message,
-        });
-        router.push("/");
-      } else {
-        toast({
-          variant: "destructive",
-          title: resp.message,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    //   if (resp.success === "true") {
+    //     toast({
+    //       title: resp.message,
+    //     });
+    //     router.push("/");
+    //   } else {
+    //     toast({
+    //       variant: "destructive",
+    //       title: resp.message,
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    const res = await handleCredentialsSignin(data);
+    console.log(res);
+
     setLoading(false);
   };
   return (
