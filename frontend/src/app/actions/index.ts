@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn, signOut } from "../../../auth";
+import { signIn, signOut, auth } from "../../../auth";
 import { AuthError } from "next-auth";
 interface handleCredentialsSigninProps {
   email: string;
@@ -46,4 +46,9 @@ export async function handleGithubSignin() {
 
 export async function handleSignOut() {
   await signOut();
+}
+
+export async function getSession() {
+  const session = await auth();
+  return session;
 }
