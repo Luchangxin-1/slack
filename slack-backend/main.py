@@ -38,12 +38,16 @@ async def SignUp(
     request: Request, user: schemas.UserCreate, db: Session = Depends(get_db)
 ):
     exist_user = crud.get_user_email(db, email=user.email)
+    print('exist_user:',exist_user)
+    print('user:',user)
+
+
     if exist_user:
-        return JSONResponse(status_code=400, content={'message':"Email already registered"})
+        return JSONResponse(content={"success":'false','message':"Email already registered","error":{"code":400,"details":"The email address you entered has been registered."}})
     print(user, "this is user")
     crud.create_user(db=db, user=user)
 
-    return JSONResponse(status_code=200,content={'message':'Create user successfully!'})
+    return JSONResponse(content={"success":'true','message':'Create user successfully!',"data":{"user":{"email":user.email,"name":user.name}}})
 
 @app.post('/login/')
 async def Login(
@@ -52,13 +56,13 @@ async def Login(
     print(user)
     exist_user=crud.get_user_email(db,email=user.email)
     if not exist_user:
-        return JSONResponse(content={"success":False,'message':"Email has not registered!","error":{"code":400,"details":"The email address you entered is not registered."}})
+        return JSONResponse(content={"success":'false','message':"Email has not registered!","error":{"code":400,"details":"The email address you entered is not registered."}})
 
     password:str=exist_user.hash_password
     if bcrypt.checkpw(user.password.encode('utf-8'),password.encode('utf-8')):
-        return JSONResponse(content={"success":True,'message':"login successfully!","data":{"user":{"email":exist_user.email,"name":exist_user.name}}})
+        return JSONResponse(content={"success":'true','message':"login successfully!","data":{"user":{"email":exist_user.email,"name":exist_user.name}}})
     else:
-        return JSONResponse(content={"success":False,'message':"Error password!","error":{"code":401,"details":"The email password is not right."}})
+        return JSONResponse(content={"success":'false','message':"Error password!","error":{"code":401,"details":"The email password is not right."}})
         
         
 

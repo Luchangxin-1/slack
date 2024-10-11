@@ -26,6 +26,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password:str
+    avatarUrl:str
 
 class UserLogin(BaseModel):
     password:str

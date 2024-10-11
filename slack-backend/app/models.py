@@ -10,4 +10,5 @@ class User(Base):
     name = Column(String(255), index=True)
     email = Column(String(255), unique=True, index=True)
     hash_password=Column(String(255))
+    avatarUrl=Column(String(255),nullable=True)
     is_active = Column(Boolean, default=False)
