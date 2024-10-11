@@ -19,6 +19,7 @@ model users {
   name         String   
   email        String   @unique 
   hash_password String  
+  avatarUrl String?
   is_active    Boolean  @default(false)
   @@index([name])
   @@index([email])

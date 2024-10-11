@@ -36,6 +36,7 @@ export const SignUpAPI = async (data: SignUpData) => {
         email: data.email, // 使用传入的 data 参数
         name: data.name,
         password: data.password,
+        avatarUrl: data.avatarUrl,
       },
       {
         headers: {

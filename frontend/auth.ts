@@ -43,7 +43,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           console.log("Error password");
           return null;
         }
-        return user as unknown as User;
+        const newUser: User = {
+          email: user.email,
+          role: "user",
+          id: user.id as unknown as string,
+          image: user.avatarUrl,
+          name: user.name,
+        };
+        return newUser;
       },
     }),
   ],
@@ -64,6 +71,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id as string;
         token.role = user.role as string;
+        token.picture = user.image;
+        token.name = user.name;
       }
       if (trigger === "update" && session) {
         token = { ...token, ...session };
@@ -73,6 +82,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       session.user.id = token.id;
       session.user.role = token.role;
+      session.user.image = token.picture;
+      session.user.name = token.name;
       return session;
     },
   },

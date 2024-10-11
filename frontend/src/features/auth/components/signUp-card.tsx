@@ -65,7 +65,13 @@ const SignUpCard = ({ setState }: SignInCardProps) => {
           title: resp.message,
         });
         setState("signIn");
-        reset({ email: "", name: "", confirmPassword: "", password: "" });
+        reset({
+          email: "",
+          name: "",
+          confirmPassword: "",
+          password: "",
+          avatarUrl: "",
+        });
       } else {
         toast({
           variant: "destructive",
@@ -78,7 +84,7 @@ const SignUpCard = ({ setState }: SignInCardProps) => {
     setLoading(false);
   };
   return (
-    <Card className="h-[500px] p-8">
+    <Card className="h-auto p-8">
       <CardHeader className="">
         <CardTitle>SignUp to continue</CardTitle>
       </CardHeader>
@@ -87,19 +93,27 @@ const SignUpCard = ({ setState }: SignInCardProps) => {
       </CardDescription>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
-          {...register("email")}
-          disabled={false}
-          placeholder="Email"
-          required
-          className="mt-4"
-        />
-        <Input
           {...register("name")}
           disabled={false}
           placeholder="Name"
           required
           className="mt-4"
         />
+        <Input
+          {...register("avatarUrl")}
+          disabled={false}
+          placeholder="Avatar"
+          required
+          className="mt-4"
+        />
+        <Input
+          {...register("email")}
+          disabled={false}
+          placeholder="Email"
+          required
+          className="mt-4"
+        />
+
         <Input
           {...register("password")}
           disabled={false}

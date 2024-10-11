@@ -20,12 +20,14 @@ import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { signIn } from "../../../../auth";
 import { handleCredentialsSignin } from "@/app/actions";
+import { TriangleAlert } from "lucide-react";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
 const SignInCard = ({ setState }: SignInCardProps) => {
   //hooks
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const router = useRouter();
   const {
     register,
@@ -35,6 +37,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   //method
   const onSubmit = async (data: SignInData) => {
     setLoading(true);
+    setError(false);
     // try {
     //   const resp = await LoginAPI(data);
     //   console.log(resp.success);
@@ -60,6 +63,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
       });
       router.push("/");
     } else {
+      setError(true);
       toast({
         variant: "destructive",
         title: res.message,
@@ -76,6 +80,12 @@ const SignInCard = ({ setState }: SignInCardProps) => {
       <CardDescription className="mt-3">
         Use your email or another service to continue
       </CardDescription>
+      {error && (
+        <div className="bg-destructive/15 py-2 px-4 rounded-lg flex  items-center gap-x-2 text-sm text-destructive">
+          <TriangleAlert className="size-4" />
+          <p>Error Password</p>
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
           disabled={false}
