@@ -1,5 +1,6 @@
 "use server";
 
+import { getToken } from "next-auth/jwt";
 import { signIn, signOut, auth } from "../../../auth";
 import { AuthError } from "next-auth";
 interface handleCredentialsSigninProps {
@@ -45,6 +46,7 @@ export async function handleGithubSignin() {
 }
 
 export async function handleSignOut() {
+
   await signOut();
 }
 

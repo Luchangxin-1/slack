@@ -21,8 +21,16 @@ model users {
   hash_password String  
   avatarUrl String?
   is_active    Boolean  @default(false)
+   workspaces  workspace[] 
   @@index([name])
   @@index([email])
+}
+model workspace {
+  userId String
+  name String
+  workSpaceId String   @id @default(uuid()) 
+  users users[]
+
 }
 model Account {
   id                 String  @id @default(cuid())

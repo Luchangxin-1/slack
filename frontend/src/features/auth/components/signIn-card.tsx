@@ -38,37 +38,40 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   const onSubmit = async (data: SignInData) => {
     setLoading(true);
     setError(false);
-    // try {
-    //   const resp = await LoginAPI(data);
-    //   console.log(resp.success);
+    try {
+      const fastapi_resp = await LoginAPI(data);
+      console.log(fastapi_resp);
 
-    //   if (resp.success === "true") {
-    //     toast({
-    //       title: resp.message,
-    //     });
-    //     router.push("/");
-    //   } else {
-    //     toast({
-    //       variant: "destructive",
-    //       title: resp.message,
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    const res = await handleCredentialsSignin(data);
-    if (res == undefined) {
-      toast({
-        title: "Login Successfully!",
-      });
-      router.push("/");
-    } else {
-      setError(true);
-      toast({
-        variant: "destructive",
-        title: res.message,
-      });
+      if (fastapi_resp.success === "true") {
+        const token = fastapi_resp.data.user.token
+        console.log(token,fastapi_resp.data)
+        localStorage.setItem('token',token)
+        toast({
+          title: fastapi_resp.message,
+        });
+        router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: fastapi_resp.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
+    const res = await handleCredentialsSignin(data);
+    // if (res == undefined) {
+    //   toast({
+    //     title: "Login Successfully!",
+    //   });
+    //   router.push("/");
+    // } else {
+    //   setError(true);
+    //   toast({
+    //     variant: "destructive",
+    //     title: res.message,
+    //   });
+    // }
 
     setLoading(false);
   };

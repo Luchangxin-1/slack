@@ -1,6 +1,8 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../auth";
+import { getToken } from "next-auth/jwt";
+import { getSession } from "next-auth/react";
 
 // export { auth as middleware } from "./auth";
 
@@ -10,6 +12,7 @@ export const config = {
 export async function middleware(request: NextRequest) {
   const session = await auth();
   const { pathname } = request.nextUrl;
+
   if (pathname === "/auth") {
     return NextResponse.next();
   }

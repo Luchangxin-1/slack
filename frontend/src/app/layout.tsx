@@ -5,6 +5,7 @@ import Provider from "./_trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
 import { auth } from "../../auth";
 import { SessionProvider } from "next-auth/react";
+import { getToken } from "next-auth/jwt";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,7 +29,6 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   console.log(session);
-
   console.log("login successfully! session:", session);
   return (
     <html lang="en">
