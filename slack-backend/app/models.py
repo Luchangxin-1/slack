@@ -18,9 +18,10 @@ class User(Base):
 
 class Workspace(Base):
     __tablename__ = "workspace"
-    workSpaceId = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    workspaceId = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
     name = Column(String(255), nullable=False)
     
     userId = Column(Integer, ForeignKey("users.id"), nullable=False)
     
     user = relationship("User", back_populates="workspaces")
+    

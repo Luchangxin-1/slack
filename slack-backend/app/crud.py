@@ -33,3 +33,5 @@ def get_hash_password_login(password:str):
     hash_password=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt(10))
     return hash_password
 
+def get_workspace_by_userId(db:Session,userId:str):
+    return db.query(models.Workspace).filter(models.Workspace.userId==userId).all()

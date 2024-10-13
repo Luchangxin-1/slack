@@ -114,18 +114,28 @@ async def Login(
         return JSONResponse(content={"success":'false','message':"Error password!","error":{"code":401,"details":"The email password is not right."}})
         
         
-@app.post('/create_workspace')
+@app.post('/workspace/create_workspace')
 async def Create_workspace(request:Request,workspace:schemas.WorkspaceCreate,db:Session=Depends(get_db)):
     print(workspace)
     exist_workspace=crud.get_workspace(db,name=workspace.name,userId=workspace.userId)
     exist_user=crud.get_user_by_id(db=db,user_id=workspace.userId)
-    if not exist_user:
-        return JSONResponse(content={"success":'false','message':"user not here","error":{"code":400,"details":"This workspace  you entered has been registered."}})
 
     if exist_workspace:
         return JSONResponse(content={"success":'false','message':"Workspace already here","error":{"code":400,"details":"This workspace  you entered has been registered."}})
-    crud.create_workspace(db=db,workspace=workspace)
-    return JSONResponse(content={"success":'true','message':'Create user successfully!',"data":{"workspace":{"email":user.email,"name":user.name}}})
+    new_workspace=crud.create_workspace(db=db,workspace=workspace)
+    return JSONResponse(content={"success":'true','message':'Create user successfully!',"data":{"workspace":{"userId":workspace.userId,"workspaceId":new_workspace.workspaceId}}})
+@app.get('/workspace/get_workspace_by_userId')
+async def get_workspace_by_userId(userId:str,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    print(userId)
+    verify_token(token)
+    exist_workspace=crud.get_workspace_by_userId(db,userId=userId)
+    workspaceList=[
+        {'workspaceId':workspace.workspaceId,'workspaceName':workspace.name,'userId'
+         :workspace.userId}
+         for workspace in exist_workspace]
+    if exist_workspace:
+        return JSONResponse(content={"success":'true','message':'Query workspace successfully!',"data":{"workspace":{"userId":userId,"workspace":workspaceList}}})
+    return JSONResponse(content={"success":'false','message':'Do not have a workspace!',"data":{"workspace":{"userId":userId}}})
 
 @app.get("/")
 def index(token:str=Depends(oauth2_scheme)):
