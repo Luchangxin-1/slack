@@ -16,11 +16,12 @@ import { SignInData, SignInFlow } from "../type";
 import { useForm } from "react-hook-form";
 import { LoginAPI } from "@/server/auth";
 import Spinner from "@/components/spinner";
-import { toast } from "@/hooks/use-toast";
+
 import { useRouter } from "next/navigation";
 import { signIn } from "../../../../auth";
 import { handleCredentialsSignin } from "@/app/actions";
 import { TriangleAlert } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
 }
@@ -43,9 +44,9 @@ const SignInCard = ({ setState }: SignInCardProps) => {
       console.log(fastapi_resp);
 
       if (fastapi_resp.success === "true") {
-        const token = fastapi_resp.data.user.token
-        console.log(token,fastapi_resp.data)
-        localStorage.setItem('token',token)
+        const token = fastapi_resp.data.user.token;
+        console.log(token, fastapi_resp.data);
+        localStorage.setItem("token", token);
         toast({
           title: fastapi_resp.message,
         });

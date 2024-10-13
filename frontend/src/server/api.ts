@@ -1,18 +1,18 @@
-'use client'
-import axios from 'axios';
+"use client";
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://localhost:9000',
+  baseURL: "http://localhost:9000",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`; // 将 token 添加到请求头
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
