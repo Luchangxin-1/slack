@@ -40,7 +40,7 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
       console.log(error);
     }
   };
-  const nowWorkspace = workspaceIdList.filter(
+  const nowWorkspace = workspaceIdList?.filter(
     (workspace) => workspace.workspaceId == workspaceId
   )[0];
   const otherWorkspaceList = workspaceIdList.filter(
@@ -54,7 +54,7 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button className="size-9 relative overflow-hidden bg-[#ABABAD] hover:bg-[#ABABAD]/80 text-slate-800 font-semibold text-xl">
           {workspaceIdList.length == 0 ? (
             <Loader className="size-5 animate-spin shrink-0" />

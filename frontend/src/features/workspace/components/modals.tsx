@@ -19,7 +19,9 @@ const Modal = () => {
       if (status === "loading" || status === "unauthenticated") return;
       const res = await getWorkspaceByUserId(session?.user.id as string);
       if (res.success === "true") {
-        // router.push(`/workspace/${res.data.workspace.workspaceId}`);
+        router.push(
+          `/workspace/${res.data.workspace.workspace[0].workspaceId}`
+        );
         console.log(res);
         setIsModalOpen(false);
       } else {

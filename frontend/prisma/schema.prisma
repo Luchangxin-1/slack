@@ -21,7 +21,6 @@ model users {
   hash_password String  
   avatarUrl String?
   is_active    Boolean  @default(false)
-   workspaces  workspace[] 
   @@index([name])
   @@index([email])
 }
@@ -29,36 +28,6 @@ model workspace {
   userId String
   name String
   workSpaceId String   @id @default(uuid()) 
-  users users[]
+  users Json
 
-}
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
