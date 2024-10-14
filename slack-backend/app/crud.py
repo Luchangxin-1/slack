@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 import bcrypt
 from . import models, schemas
-
+from sqlalchemy.orm.attributes import flag_modified
 
 def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -20,14 +20,24 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 def create_workspace(db:Session,workspace:schemas.WorkspaceCreate):
-    db_workspace=models.Workspace(name=workspace.name,userId=workspace.userId)
+    db_workspace=models.Workspace(name=workspace.name,userId=workspace.userId,users=[workspace.userId])
     db.add(db_workspace)
     db.commit()
     db.refresh(db_workspace)
     return db_workspace
+def get_workspace_by_workspaceId(db:Session,workspaceId:str):
+    return db.query(models.Workspace).filter(models.Workspace.workspaceId==workspaceId).first()
 def get_workspace(db:Session,name:str,userId:str):
     return db.query(models.Workspace).filter(models.Workspace.name==name,models.Workspace.userId==userId).first()
-
+def join_workspace(db:Session,data:schemas.WorkspaceJoin):
+    db_workspace=get_workspace_by_workspaceId(db=db,workspaceId=data.workspaceId)
+    db_workspace.users.append(data.userId)
+    db_user=get_user_by_id(db=db,user_id=data.userId)
+    
+    flag_modified(db_workspace, "users")
+    db.commit()
+    db.refresh(db_workspace)
+    return db_workspace
 
 def get_hash_password_login(password:str):
     hash_password=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt(10))

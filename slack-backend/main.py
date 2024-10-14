@@ -136,6 +136,17 @@ async def get_workspace_by_userId(userId:str,db:Session=Depends(get_db),token:st
     if exist_workspace:
         return JSONResponse(content={"success":'true','message':'Query workspace successfully!',"data":{"workspace":{"userId":userId,"workspace":workspaceList}}})
     return JSONResponse(content={"success":'false','message':'Do not have a workspace!',"data":{"workspace":{"userId":userId}}})
+@app.post('/workspace/join_workspace')
+async def join_workspace(data:schemas.WorkspaceJoin,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    verify_token(token)
+    exist_workspace=crud.get_workspace_by_workspaceId(db=db,workspaceId=data.workspaceId)
+    exist_user=crud.get_user_by_id(db=db,user_id=data.userId)
+    if data.userId in exist_workspace.users:
+        return JSONResponse(content={"success":'false','message':'User already in workspace!',"data":{"workspace":{"userId":data.userId}}})
+
+    new_workspace=crud.join_workspace(db=db,data=data)
+    return new_workspace
+
 
 @app.get("/")
 def index(token:str=Depends(oauth2_scheme)):

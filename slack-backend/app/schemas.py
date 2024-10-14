@@ -1,5 +1,7 @@
 from pydantic import BaseModel
+from typing import Literal
 
+from sqlalchemy import Null
 
 class TodoBase(BaseModel):
     title: str
@@ -35,9 +37,16 @@ class UserLogin(BaseModel):
 class User(UserBase):
     id: int
     is_active: bool
+    role: Literal['ADMIN', 'USER'] = 'USER' 
+    hash_password:str 
+    avatarUrl:str 
+
+
 class WorkspaceCreate(BaseModel):
     name:str
     userId:str
-
+class WorkspaceJoin(BaseModel):
+    userId:str
+    workspaceId:str
     class Config:
         from_attributes = True
