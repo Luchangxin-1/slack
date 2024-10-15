@@ -30,7 +30,6 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
   const router = useRouter();
   //method
   const getWorkspaceList = async () => {
-    console.log(status);
     if (status != "authenticated") return;
     try {
       const res = await getWorkspaceByUserId(userId);
@@ -50,7 +49,6 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
   useEffect(() => {
     getWorkspaceList();
   }, [status]);
-  console.log(workspaceIdList);
 
   return (
     <DropdownMenu>

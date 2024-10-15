@@ -8,3 +8,8 @@ export type WorkSpaceDataType = {
   workspaceName: string;
   userId: string;
 };
+
+export type JoinWorkspaceType = {
+  userId: string;
+  workspaceId: string;
+};
