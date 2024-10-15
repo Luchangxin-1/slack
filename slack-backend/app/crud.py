@@ -33,7 +33,7 @@ def join_workspace(db:Session,data:schemas.WorkspaceJoin):
     db_workspace=get_workspace_by_workspaceId(db=db,workspaceId=data.workspaceId)
     db_workspace.users.append(data.userId)
     db_user=get_user_by_id(db=db,user_id=data.userId)
-    
+
     flag_modified(db_workspace, "users")
     db.commit()
     db.refresh(db_workspace)
@@ -45,3 +45,16 @@ def get_hash_password_login(password:str):
 
 def get_workspace_by_userId(db:Session,userId:str):
     return db.query(models.Workspace).filter(models.Workspace.userId==userId).all()
+
+def get_other_users(db:Session,userId:str):
+    return db.query(models.User).filter(models.User.id!=int(userId)).all()
+
+def get_users_in_workspace(db:Session,workspaceId:str):
+    db_workspace=get_workspace_by_workspaceId(db=db,workspaceId=workspaceId)
+    userId_list=db_workspace.users
+    users=[]
+    for id in userId_list:
+        user=get_user_by_id(db=db,user_id=id)
+        if(user):
+            users.append(user)
+    return users
