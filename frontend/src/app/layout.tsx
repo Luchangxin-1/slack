@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { auth } from "../../auth";
 import { SessionProvider } from "next-auth/react";
 import Modal from "@/features/workspace/components/modals";
+import { JotaiProvider } from "@/components/jotai-provider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -39,10 +40,12 @@ export default async function RootLayout({
         <NormalToaster />
         <Toaster />
         <SessionProvider>
-          <Provider>
-            <Modal />
-            {children}
-          </Provider>
+          <JotaiProvider>
+            <Provider>
+              <Modal />
+              {children}
+            </Provider>
+          </JotaiProvider>
         </SessionProvider>
       </body>
     </html>

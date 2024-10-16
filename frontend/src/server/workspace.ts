@@ -1,6 +1,7 @@
 import {
   CreateWorkspaceDataType,
   JoinWorkspaceType,
+  WorkspaceRenameType,
 } from "@/features/workspace/type";
 import api from "./api";
 import { auth } from "../../auth";
@@ -34,10 +35,24 @@ const getWorkspaceByWorkspaceId = async (workspaceId: string) => {
   );
   return resp.data;
 };
+const deleteWorkspaceByworkspaceId = async (workspaceId: string) => {
+  const resp = await api.delete("/workspace/delect_workspace_by_workspaceId", {
+    params: {
+      workspaceId: workspaceId,
+    },
+  });
+  return resp;
+};
+const updateWorkspaceName = async (data: WorkspaceRenameType) => {
+  const resp = await api.post("/workspace/update_workspace_name", data);
+  return resp;
+};
 export {
   getWorkspaceByUserId,
   createWorkspace,
   joinWorkspace,
   getUsersInWorkspace,
   getWorkspaceByWorkspaceId,
+  deleteWorkspaceByworkspaceId,
+  updateWorkspaceName,
 };

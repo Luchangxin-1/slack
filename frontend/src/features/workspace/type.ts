@@ -14,3 +14,8 @@ export type JoinWorkspaceType = {
   userId: string;
   workspaceId: string;
 };
+
+export type WorkspaceRenameType = {
+  name: string;
+  workspaceId: string;
+};
