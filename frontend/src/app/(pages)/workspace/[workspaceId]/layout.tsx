@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/resizable";
 import WorkspaceSidebar from "@/features/workspace/components/workspace-sidebar";
 import { atom, useAtom } from "jotai";
-import { UseWorkspace } from "@/features/workspace/store/use-workspace";
+import { useWorkspace } from "@/features/workspace/store/use-workspace";
 import { getWorkspaceByWorkspaceId } from "@/server/workspace";
 import { useEffect } from "react";
 interface WorkspaceIdLayoutProps {
@@ -21,10 +21,11 @@ interface WorkspaceIdLayoutProps {
 }
 const WorkspaceIdLayout = ({ children, params }: WorkspaceIdLayoutProps) => {
   const { data: session, status } = useSession();
-  const [workspace, setWorksace] = UseWorkspace();
+  const [workspace, setWorksace] = useWorkspace();
   const getWorkspace = async () => {
     const resp = await getWorkspaceByWorkspaceId(params.workspaceId);
     setWorksace(resp);
+    console.log(resp);
   };
   useEffect(() => {
     getWorkspace();

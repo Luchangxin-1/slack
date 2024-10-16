@@ -13,7 +13,7 @@ import { getWorkspaceByUserId } from "@/server/workspace";
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 import { useSession } from "next-auth/react";
 import { Loader, Plus } from "lucide-react";
-import { WorkSpaceDataType } from "../type";
+import { WorkspaceDataType } from "../type";
 import { useRouter } from "next/navigation";
 interface WorkspaceSwitcherProps {
   workspaceId: string;
@@ -24,7 +24,7 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
   //states
   const { data: session, status } = useSession();
   const [open, setOpen] = useCreateWorkspaceModal();
-  const [workspaceIdList, setWorkspaceIdList] = useState<WorkSpaceDataType[]>(
+  const [workspaceIdList, setWorkspaceIdList] = useState<WorkspaceDataType[]>(
     []
   );
   const router = useRouter();
@@ -57,7 +57,7 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
           {workspaceIdList.length == 0 ? (
             <Loader className="size-5 animate-spin shrink-0" />
           ) : (
-            nowWorkspace.workspaceName.charAt(0).toUpperCase()
+            nowWorkspace?.name?.charAt(0).toUpperCase()
           )}
         </Button>
       </DropdownMenuTrigger>
@@ -68,7 +68,7 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
           }
           className="cursor-default flex-col justify-start items-start capitalize font-bold"
         >
-          {nowWorkspace?.workspaceName}
+          {nowWorkspace?.name}
           <span className="text-xs text-muted-foreground font-normal">
             Active workspace
           </span>
@@ -81,9 +81,9 @@ const WorkspaceSwitcher = ({ workspaceId, userId }: WorkspaceSwitcherProps) => {
             className="cursor-pointer overflow-hidden truncate capitalize"
           >
             <div className="size-9 relative overflow-hidden bg-[#616061] text-white font-semibold text-lg rounded-md flex items-center justify-center mr-2">
-              {workspace.workspaceName.charAt(0).toUpperCase()}
+              {workspace.name.charAt(0).toUpperCase()}
             </div>
-            <p className="truncate">{workspace.workspaceName}</p>
+            <p className="truncate">{workspace?.name}</p>
           </DropdownMenuItem>
         ))}
         <DropdownMenuItem

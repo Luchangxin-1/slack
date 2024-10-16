@@ -2,14 +2,15 @@ import { getUsersInWorkspace } from "@/server/workspace";
 import { users } from "@prisma/client";
 import { AlertTriangle, Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { UseWorkspace } from "../store/use-workspace";
+import { useWorkspace } from "../store/use-workspace";
+import WorkspaceHeader from "./workspace-header";
 interface WorkspaceSidebarProps {
   workspaceId: string;
 }
 const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
   //states
   const [workspaceUsers, setWorkspaceUsers] = useState<users[]>([]);
-  const [workspace, setWorksace] = UseWorkspace();
+  const [workspace, setWorksace] = useWorkspace();
   const GetUsersInWorkspaceAndWorkspace = async () => {
     if (workspaceId == undefined) return;
     const users = await getUsersInWorkspace(workspaceId);
@@ -34,7 +35,11 @@ const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
       </div>
     );
   }
-  return <div>{workspaceId}</div>;
+  return (
+    <div className="flex flex-col bg-[#5e2c5f] h-full">
+      <WorkspaceHeader />
+    </div>
+  );
 };
 
 export default WorkspaceSidebar;

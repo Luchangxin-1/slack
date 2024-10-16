@@ -3,10 +3,11 @@ export type CreateWorkspaceDataType = {
   name: string;
 };
 
-export type WorkSpaceDataType = {
+export type WorkspaceDataType = {
   workspaceId: string;
-  workspaceName: string;
+  name: string;
   userId: string;
+  users: string[];
 };
 
 export type JoinWorkspaceType = {

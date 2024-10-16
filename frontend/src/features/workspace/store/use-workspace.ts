@@ -1,7 +1,8 @@
 import { atom, useAtom } from "jotai";
+import { WorkspaceDataType } from "../type";
 
-const workspaceAtom = atom();
+const workspaceAtom = atom<WorkspaceDataType | null>();
 
-export const UseWorkspace = () => {
+export const useWorkspace = () => {
   return useAtom(workspaceAtom);
 };
