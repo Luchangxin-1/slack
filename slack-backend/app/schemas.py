@@ -48,5 +48,8 @@ class WorkspaceCreate(BaseModel):
 class WorkspaceJoin(BaseModel):
     userId:str
     workspaceId:str
+class WorkspaceRename(BaseModel):
+    name:str
+    workspaceId:str
     class Config:
         from_attributes = True

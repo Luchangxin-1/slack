@@ -130,7 +130,7 @@ async def get_workspace_by_userId(userId:str,db:Session=Depends(get_db),token:st
     verify_token(token)
     exist_workspace=crud.get_workspace_by_userId(db,userId=userId)
     workspaceList=[
-        {'workspaceId':workspace.workspaceId,'workspaceName':workspace.name,'userId'
+        {'workspaceId':workspace.workspaceId,'name':workspace.name,'userId'
          :workspace.userId}
          for workspace in exist_workspace]
     if exist_workspace:
@@ -161,7 +161,14 @@ async def get_users_in_workspace(workspaceId:str,db:Session=Depends(get_db),toke
     verify_token(token)
     users=crud.get_users_in_workspace(db=db,workspaceId=workspaceId)
     return users
-
+@app.delete('/workspace/delect_workspace_by_workspaceId')
+async def delect_workspace_by_workspaceId(workspaceId:str,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    verify_token(token)
+    return crud.delete_workspace_by_workspceId(db=db,workspaceId=workspaceId)
+@app.post('/workspace/update_workspace_name')
+async def update_workspace_name(data:schemas.WorkspaceRename,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    verify_token(token)
+    return crud.update_workspace_by_workspaceId(db=db,data=data)
 
 
 @app.get("/")

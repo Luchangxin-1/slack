@@ -58,3 +58,15 @@ def get_users_in_workspace(db:Session,workspaceId:str):
         if(user):
             users.append(user)
     return users
+def delete_workspace_by_workspceId(db:Session,workspaceId:str):
+    db_workspace=get_workspace_by_workspaceId(db=db,workspaceId=workspaceId)
+    db.delete(db_workspace)
+    db.commit()
+    return get_workspace_by_userId(db=db,userId=db_workspace.userId)
+
+def update_workspace_by_workspaceId(db:Session,data:schemas.WorkspaceRename):
+    db_workspace=get_workspace_by_workspaceId(db=db,workspaceId=data.workspaceId)
+    db_workspace.name=data.name
+    db.commit()
+    db.refresh(db_workspace)
+    return db_workspace
