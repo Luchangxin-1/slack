@@ -1,4 +1,5 @@
 import {
+  ChannelCreateType,
   CreateWorkspaceDataType,
   JoinWorkspaceType,
   WorkspaceRenameType,
@@ -47,6 +48,10 @@ const updateWorkspaceName = async (data: WorkspaceRenameType) => {
   const resp = await api.post("/workspace/update_workspace_name", data);
   return resp;
 };
+const createChannel = async (data: ChannelCreateType) => {
+  const resp = await api.post("/workspace/create_channel", data);
+  return resp;
+};
 export {
   getWorkspaceByUserId,
   createWorkspace,
@@ -55,4 +60,5 @@ export {
   getWorkspaceByWorkspaceId,
   deleteWorkspaceByworkspaceId,
   updateWorkspaceName,
+  createChannel,
 };

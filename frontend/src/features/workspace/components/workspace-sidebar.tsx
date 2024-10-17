@@ -1,20 +1,30 @@
 import { getUsersInWorkspace } from "@/server/workspace";
 import { users } from "@prisma/client";
-import { AlertTriangle, Loader } from "lucide-react";
+import {
+  AlertTriangle,
+  HashIcon,
+  Loader,
+  MessageSquareText,
+  SendHorizonal,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useWorkspace } from "../store/use-workspace";
 import WorkspaceHeader from "./workspace-header";
+import SidebarItem from "./sidebar-item";
+import WorkspaceSection from "./workspace-section";
+import { useWorkspaceMember } from "../store/use-workpace-member";
+import UserItem from "./user-item";
 interface WorkspaceSidebarProps {
   workspaceId: string;
 }
 const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
   //states
-  const [workspaceUsers, setWorkspaceUsers] = useState<users[]>([]);
+  const [workspaceMember, setWorkspaceMember] = useWorkspaceMember();
   const [workspace, setWorksace] = useWorkspace();
   const GetUsersInWorkspaceAndWorkspace = async () => {
     if (workspaceId == undefined) return;
     const users = await getUsersInWorkspace(workspaceId);
-    setWorkspaceUsers(users);
+    setWorkspaceMember(users);
     console.log("Users list in this workspace:", users);
   };
   useEffect(() => {
@@ -38,6 +48,34 @@ const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
   return (
     <div className="flex flex-col bg-[#5e2c5f] h-full">
       <WorkspaceHeader />
+      <div className="flex flex-col px-2 mt-3">
+        <SidebarItem label="Threads" Icon={MessageSquareText} id="threads" />
+
+        <SidebarItem label="Drafts & Sent" Icon={SendHorizonal} id="Drafts" />
+      </div>
+
+      <WorkspaceSection label="Channels" hint="New channel" onNew={() => {}}>
+        {workspace.channels.length > 0 &&
+          workspace?.channels.map((channel) => (
+            <SidebarItem
+              key={channel.channelId}
+              Icon={HashIcon}
+              label={channel.name}
+              id={channel.channelId}
+            />
+          ))}
+      </WorkspaceSection>
+      <WorkspaceSection label="Members" hint="New member" onNew={() => {}}>
+        {workspaceMember &&
+          workspaceMember?.map((member) => (
+            <UserItem
+              label={member.name}
+              id={member.id as unknown as string}
+              key={member.id}
+              image={member.avatarUrl as string}
+            />
+          ))}
+      </WorkspaceSection>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { channel } from "@prisma/client";
+
 export type CreateWorkspaceDataType = {
   userId: string;
   name: string;
@@ -8,6 +10,7 @@ export type WorkspaceDataType = {
   name: string;
   userId: string;
   users: string[];
+  channels: channel[];
 };
 
 export type JoinWorkspaceType = {
@@ -16,6 +19,10 @@ export type JoinWorkspaceType = {
 };
 
 export type WorkspaceRenameType = {
+  name: string;
+  workspaceId: string;
+};
+export type ChannelCreateType = {
   name: string;
   workspaceId: string;
 };

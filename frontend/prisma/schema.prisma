@@ -29,5 +29,15 @@ model workspace {
   name String
   workSpaceId String   @id @default(uuid()) 
   users Json
+  channels   channel[]  @relation("WorkspaceChannels")
+
+}
+
+model channel{
+   channelId String   @id @default(uuid()) 
+
+  name String
+  workspaceId String
+ workspace   workspace @relation(fields: [workspaceId], references: [workSpaceId], name: "WorkspaceChannels")
 
 }
