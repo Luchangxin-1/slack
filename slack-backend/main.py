@@ -169,8 +169,9 @@ async def delect_workspace_by_workspaceId(workspaceId:str,db:Session=Depends(get
 async def update_workspace_name(data:schemas.WorkspaceRename,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
     verify_token(token)
     return crud.update_workspace_by_workspaceId(db=db,data=data)
-
-
+@app.post('/workspace/create_channel')
+async def create_channel(data:schemas.ChannelCreate,db:Session=Depends(get_db)):
+    return crud.create_channel(db=db,data=data)
 @app.get("/")
 def index(token:str=Depends(oauth2_scheme)):
     email=verify_token(token)

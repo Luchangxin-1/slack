@@ -16,6 +16,14 @@ class User(Base):
 
     workspaces = relationship("Workspace", back_populates="user")
 
+
+class Channel(Base):
+    __tablename__='channel'
+    channelId = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    name = Column(String(255), nullable=False)
+    workspaceId = Column(CHAR(36), ForeignKey("workspace.workspaceId"))
+    
+    workspace = relationship("Workspace", back_populates="channels")
 class Workspace(Base):
     __tablename__ = "workspace"
     workspaceId = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
@@ -23,4 +31,8 @@ class Workspace(Base):
     users=Column(JSON)
     userId = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="workspaces")
-    
+    channels=relationship("Channel",back_populates='workspace',cascade="all,delete-orphan")
+
+
+
+

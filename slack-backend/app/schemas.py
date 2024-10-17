@@ -51,5 +51,10 @@ class WorkspaceJoin(BaseModel):
 class WorkspaceRename(BaseModel):
     name:str
     workspaceId:str
+
+class ChannelCreate(BaseModel):
+    name:str
+    workspaceId:str
+    
     class Config:
         from_attributes = True

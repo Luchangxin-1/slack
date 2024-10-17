@@ -1,8 +1,8 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,joinedload
 import bcrypt
 from . import models, schemas
 from sqlalchemy.orm.attributes import flag_modified
-
+from .models import Workspace
 def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -26,7 +26,7 @@ def create_workspace(db:Session,workspace:schemas.WorkspaceCreate):
     db.refresh(db_workspace)
     return db_workspace
 def get_workspace_by_workspaceId(db:Session,workspaceId:str):
-    return db.query(models.Workspace).filter(models.Workspace.workspaceId==workspaceId).first()
+    return db.query(models.Workspace).options(joinedload(Workspace.channels)).filter(models.Workspace.workspaceId==workspaceId).first()
 def get_workspace(db:Session,name:str,userId:str):
     return db.query(models.Workspace).filter(models.Workspace.name==name,models.Workspace.userId==userId).first()
 def join_workspace(db:Session,data:schemas.WorkspaceJoin):
@@ -70,3 +70,12 @@ def update_workspace_by_workspaceId(db:Session,data:schemas.WorkspaceRename):
     db.commit()
     db.refresh(db_workspace)
     return db_workspace
+
+def create_channel(db:Session,data:schemas.ChannelCreate):
+    db_workspace=get_workspace_by_workspaceId(db=db,workspaceId=data.workspaceId)
+    db_channel=models.Channel(name=data.name,workspaceId=data.workspaceId)
+    db.add(db_channel)
+    db.commit()
+    db.refresh(db_channel)
+    return db_channel
+
