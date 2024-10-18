@@ -8,6 +8,7 @@ import {
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import CreateChannelModal from "@/features/channel/components/create-channel-modal";
 
 const Modal = () => {
   //states
@@ -59,6 +60,7 @@ const Modal = () => {
   if (!mounted) return null;
   return (
     <>
+      <CreateChannelModal />
       <CreateWorkspaceModal />
     </>
   );

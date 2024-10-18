@@ -14,6 +14,9 @@ import SidebarItem from "./sidebar-item";
 import WorkspaceSection from "./workspace-section";
 import { useWorkspaceMember } from "../store/use-workpace-member";
 import UserItem from "./user-item";
+import { Separator } from "@/components/ui/separator";
+import { useCreateChannelModal } from "@/features/channel/store/use-create-channel-modal";
+import { useSession } from "next-auth/react";
 interface WorkspaceSidebarProps {
   workspaceId: string;
 }
@@ -21,6 +24,9 @@ const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
   //states
   const [workspaceMember, setWorkspaceMember] = useWorkspaceMember();
   const [workspace, setWorksace] = useWorkspace();
+  const { data: session } = useSession();
+  const [isCreateChannelModalOpen, setIsCreateChannelModalOpen] =
+    useCreateChannelModal();
   const GetUsersInWorkspaceAndWorkspace = async () => {
     if (workspaceId == undefined) return;
     const users = await getUsersInWorkspace(workspaceId);
@@ -53,8 +59,14 @@ const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
 
         <SidebarItem label="Drafts & Sent" Icon={SendHorizonal} id="Drafts" />
       </div>
-
-      <WorkspaceSection label="Channels" hint="New channel" onNew={() => {}}>
+      <WorkspaceSection
+        label="Channels"
+        hint="New channel"
+        onNew={() => {
+          workspace.userId == session?.user.id &&
+            setIsCreateChannelModalOpen(true);
+        }}
+      >
         {workspace.channels.length > 0 &&
           workspace?.channels.map((channel) => (
             <SidebarItem
