@@ -5,6 +5,7 @@ import React from "react";
 import { useWorkspace } from "../store/use-workspace";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { useChannel } from "../store/use-channel";
 
 const sidebarItemVariants = cva(
   "flex items-center gap-1.5 justify-start font-normal h-7 px-[18px] text-sm overflow-hidden ",
@@ -28,12 +29,16 @@ interface SidebarItemProps {
 }
 const SidebarItem = ({ label, id, Icon, variant }: SidebarItemProps) => {
   const [workspace, setWorksace] = useWorkspace();
+  const [channel, setChannel] = useChannel();
   return (
     <Button
       asChild
       variant="transparent"
       size="sm"
-      className={cn(sidebarItemVariants({ variant }))}
+      className={cn(
+        sidebarItemVariants({ variant }),
+        channel?.name === label && "bg-white text-black"
+      )}
     >
       <Link href={`/workspace/${workspace?.workspaceId}/channel/${id}`}>
         <Icon className="size-3.5 mr-1 shrink-0" />

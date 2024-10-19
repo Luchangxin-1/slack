@@ -58,7 +58,7 @@ const InviteModal = ({ open, setOpen }: InviteModalProps) => {
     console.log(res);
   };
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Invite a member</DialogTitle>

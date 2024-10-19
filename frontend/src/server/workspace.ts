@@ -50,6 +50,12 @@ const createChannel = async (data: ChannelCreateType) => {
   const resp = await api.post("/workspace/create_channel", data);
   return resp;
 };
+const getChannelBychannelId = async (channelId: string) => {
+  const resp = await api.get(
+    `/workspace/get_channel_by_channelId?channelId=${channelId}`
+  );
+  return resp.data;
+};
 export {
   getWorkspaceByUserId,
   createWorkspace,
@@ -59,4 +65,5 @@ export {
   deleteWorkspaceByworkspaceId,
   updateWorkspaceName,
   createChannel,
+  getChannelBychannelId,
 };
