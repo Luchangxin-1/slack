@@ -18,6 +18,7 @@ import { createChannel } from "@/server/workspace";
 import { useWorkspace } from "@/features/workspace/store/use-workspace";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useChannel } from "../store/use-channel";
 
 const CreateChannelModal = () => {
   //hooks
@@ -34,7 +35,7 @@ const CreateChannelModal = () => {
     },
   });
   const [loading, setLoading] = useState(false);
-
+  const [channel, setChannel] = useChannel();
   const [open, setOpen] = useCreateChannelModal();
 
   //methods
@@ -53,8 +54,11 @@ const CreateChannelModal = () => {
       if (respData.status === "success") {
         toast.success(respData.message);
         setOpen(false);
-        router.push("/workspace");
-        respData.data.channelId;
+        setChannel(respData.data);
+        router.push(
+          `/workspace/${workpace?.workspaceId}/channel/${respData.data.channelId}`
+        );
+        // respData.data.channelId;
       } else {
         toast.error(respData.message);
       }

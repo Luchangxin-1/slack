@@ -67,7 +67,7 @@ const WorkspaceSidebar = ({ workspaceId }: WorkspaceSidebarProps) => {
             setIsCreateChannelModalOpen(true);
         }}
       >
-        {workspace.channels.length > 0 &&
+        {workspace.channels?.length > 0 &&
           workspace?.channels.map((channel) => (
             <SidebarItem
               key={channel.channelId}

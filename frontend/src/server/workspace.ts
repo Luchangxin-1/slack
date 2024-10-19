@@ -6,6 +6,7 @@ import {
 } from "@/features/workspace/type";
 import api from "./api";
 import { auth } from "../../auth";
+import { ChannelRenameType } from "@/features/channel/type";
 const getWorkspaceByUserId = async (userId: string) => {
   const resp = await api.get(
     `/workspace/get_workspace_by_userId?userId=${userId}`
@@ -56,6 +57,22 @@ const getChannelBychannelId = async (channelId: string) => {
   );
   return resp.data;
 };
+const deleteChannelBychannelId = async (
+  channelId: string,
+  workspaceId: string
+) => {
+  const resp = await api.delete("/workspace/delect_channel_by_channelId", {
+    params: {
+      channelId: channelId,
+      workspaceId: workspaceId,
+    },
+  });
+  return resp.data;
+};
+const updateChannelName = async (data: ChannelRenameType) => {
+  const resp = await api.post("/workspace/update_channel_name", data);
+  return resp.data;
+};
 export {
   getWorkspaceByUserId,
   createWorkspace,
@@ -66,4 +83,6 @@ export {
   updateWorkspaceName,
   createChannel,
   getChannelBychannelId,
+  deleteChannelBychannelId,
+  updateChannelName,
 };

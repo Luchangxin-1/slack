@@ -1,4 +1,5 @@
 "use client";
+import { useChannel } from "@/features/channel/store/use-channel";
 import { useWorkspace } from "@/features/workspace/store/use-workspace";
 import { Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -14,14 +15,13 @@ const WorkspaceIdPage = ({ params }: WorkspaceIdPageProps) => {
   //hooks
   const router = useRouter();
   const [workspace, setWorksace] = useWorkspace();
+  const [channel, setChannel] = useChannel();
   const { data: session, status } = useSession();
-  const channelId = useMemo(
-    () => workspace?.channels[0].channelId,
-    [workspace]
-  );
   useEffect(() => {
-    if (channelId)
-      router.push(`/workspace/${workspace?.workspaceId}/channel/${channelId}`);
+    if (channel?.channelId)
+      router.push(
+        `/workspace/${workspace?.workspaceId}/channel/${channel.channelId}`
+      );
   }, [workspace]);
   if (status === "loading") {
     return (
@@ -30,7 +30,7 @@ const WorkspaceIdPage = ({ params }: WorkspaceIdPageProps) => {
       </div>
     );
   }
-  return <div></div>;
+  return <div>cfhdh</div>;
 };
 
 export default WorkspaceIdPage;

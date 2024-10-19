@@ -1,6 +1,8 @@
 "use client";
-import { useChannel } from "@/features/workspace/store/use-channel";
+import ChannelHeader from "@/features/channel/components/channel-header";
+import { useChannel } from "@/features/channel/store/use-channel";
 import { getChannelBychannelId } from "@/server/workspace";
+import { AlertTriangle } from "lucide-react";
 import React, { useEffect } from "react";
 interface ChannelIdPageProps {
   params: {
@@ -13,13 +15,23 @@ const ChannelPage = ({ params }: ChannelIdPageProps) => {
   const [channel, setChannel] = useChannel();
   const getChannel = async () => {
     const res = await getChannelBychannelId(params.channelId);
-    console.log(res.data);
     setChannel(res.data);
   };
   useEffect(() => {
     getChannel();
-  }, []);
-  return <div>{params.channelId} </div>;
+  }, [params.channelId]);
+  if (!channel)
+    return (
+      <div className="flex flex-col gap-y-2 h-full bg-[#5E2C5F]  items-center justify-center">
+        <AlertTriangle className="size-5 text-white" />
+        <p className="text-white text-sm">Channel not found</p>
+      </div>
+    );
+  return (
+    <div>
+      <ChannelHeader channelName={channel.name} />
+    </div>
+  );
 };
 
 export default ChannelPage;

@@ -5,7 +5,7 @@ import React from "react";
 import { useWorkspace } from "../store/use-workspace";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { useChannel } from "../store/use-channel";
+import { useChannel } from "../../channel/store/use-channel";
 
 const sidebarItemVariants = cva(
   "flex items-center gap-1.5 justify-start font-normal h-7 px-[18px] text-sm overflow-hidden ",
