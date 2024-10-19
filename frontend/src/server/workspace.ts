@@ -19,9 +19,7 @@ const createWorkspace = async (data: CreateWorkspaceDataType) => {
   return resp.data;
 };
 const joinWorkspace = async (data: JoinWorkspaceType) => {
-  const resp = await api.get(
-    `/workspace/join_workspace?userOd=${data.userId}&workspaceId=${data.workspaceId}`
-  );
+  const resp = await api.post(`/workspace/join_workspace`, data);
   return resp.data;
 };
 const getUsersInWorkspace = async (workspaceId: string) => {

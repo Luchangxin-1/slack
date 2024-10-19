@@ -26,3 +26,8 @@ export type ChannelCreateType = {
   name: string;
   workspaceId: string;
 };
+
+export type InviteMemberType = {
+  userId: string;
+  workspaceId: string;
+};

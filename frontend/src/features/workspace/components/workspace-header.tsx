@@ -13,9 +13,12 @@ import { useSession } from "next-auth/react";
 import Hint from "@/components/hint";
 import PreferencesModal from "./preferences-modal";
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
+import InviteModal from "./invite-modal";
 
 const WorkspaceHeader = () => {
+  //hooks
   const [workspace, setWorkspace] = useWorkspace();
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isWorkspaceModalOpen, setIsWorkspaceModalOpen] =
     useCreateWorkspaceModal();
   const { data: session, status } = useSession();
@@ -28,6 +31,7 @@ const WorkspaceHeader = () => {
   }, [status]);
   return (
     <>
+      <InviteModal open={isInviteOpen} setOpen={setIsInviteOpen} />
       <PreferencesModal
         open={preferencesOpen}
         setOpen={setPreferencesOpen}
@@ -61,7 +65,9 @@ const WorkspaceHeader = () => {
               <>
                 <DropdownMenuItem
                   className="cursor-pointer py-2"
-                  onClick={() => {}}
+                  onClick={() => {
+                    setIsInviteOpen(true);
+                  }}
                 >
                   Invite people to {workspace?.name}
                 </DropdownMenuItem>
