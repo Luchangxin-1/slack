@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
 import { db } from "./db";
+import { resolve } from "path";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -31,3 +32,29 @@ export const getUserFromDB = async (email: string, password: string) => {
     message: "Password is incorrect.",
   };
 };
+
+export function fileToBase64(image: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(image);
+  });
+}
+
+export function base64ToFile(base64: string): string {
+  const byteCharacters = atob(base64.split(",")[1]);
+  const byteNumbers = new Uint8Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const blob = new Blob([byteNumbers], { type: "image/jpg" });
+  return URL.createObjectURL(blob);
+}

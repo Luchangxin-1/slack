@@ -21,6 +21,7 @@ model users {
   hash_password String  
   avatarUrl String?
   is_active    Boolean  @default(false)
+  messages message[]
   @@index([name])
   @@index([email])
 }
@@ -34,10 +35,25 @@ model workspace {
 }
 
 model channel{
-   channelId String   @id @default(uuid()) 
+  channelId String   @id @default(uuid()) 
 
   name String
   workspaceId String
- workspace   workspace @relation(fields: [workspaceId], references: [workSpaceId], name: "WorkspaceChannels")
+  workspace   workspace @relation(fields: [workspaceId], references: [workSpaceId], name: "WorkspaceChannels")
+  messages message[]
+}
+
+model message{
+  messageId String   @id @default(uuid()) 
+  images String? @db.Text
+  body String
+  userId Int
+  user users @relation(fields: [userId],references: [id])
+  channelId String
+  channel channel @relation(fields: [channelId],references: [channelId])
+  parentId String?
+  parent     message?  @relation("MessageReplies", fields: [parentId], references: [messageId]) // 定义父消息关系
+  replies    message[] @relation("MessageReplies") 
+
 
 }
