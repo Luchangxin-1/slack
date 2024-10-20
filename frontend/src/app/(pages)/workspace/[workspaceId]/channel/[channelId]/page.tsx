@@ -1,4 +1,5 @@
 "use client";
+import ChatInput from "@/features/channel/components/channel-chatInput";
 import ChannelHeader from "@/features/channel/components/channel-header";
 import { useChannel } from "@/features/channel/store/use-channel";
 import { getChannelBychannelId } from "@/server/workspace";
@@ -28,8 +29,10 @@ const ChannelPage = ({ params }: ChannelIdPageProps) => {
       </div>
     );
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <ChannelHeader channelName={channel.name} />
+      <div className="flex-1 " />
+      <ChatInput placholder={`Message # ${channel.name}`} />
     </div>
   );
 };
