@@ -1,8 +1,7 @@
 from pydantic import BaseModel
-from typing import Literal
+from typing import Literal, Optional
 
-from sqlalchemy import Null
-
+from pydantic import BaseModel, Json
 class TodoBase(BaseModel):
     title: str
     description: str | None = None
@@ -51,10 +50,18 @@ class WorkspaceJoin(BaseModel):
 class WorkspaceRename(BaseModel):
     name:str
     workspaceId:str
+class ChanneleRename(BaseModel):
+    name:str
+    channelId:str
 
 class ChannelCreate(BaseModel):
     name:str
     workspaceId:str
-    
+class MessageCreate(BaseModel):
+    channelId:str
+    body:str
+    images:str
+    userId:str
+    parentId:Optional[str]
     class Config:
         from_attributes = True

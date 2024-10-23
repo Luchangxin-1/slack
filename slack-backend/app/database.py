@@ -13,10 +13,10 @@ if not DB_URL:
 
 connect_args = {}
 if "sqlite" in DB_URL:
-    connect_args = {"check_same_thread": False}
+    connect_args = {"check_same_thread": False} #多线程共享
 
-engine = create_engine(DB_URL, connect_args=connect_args, echo=True)
+engine = create_engine(DB_URL, connect_args=connect_args, echo=True)   #echo=True 打开日志记录  
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)  #手动提交 禁止自动刷新 以便控制啥时候手动提交
 
-Base = declarative_base()
+Base = declarative_base()  #之后所有的模型类都继承这个类

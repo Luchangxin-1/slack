@@ -146,10 +146,31 @@ async def join_workspace(data:schemas.WorkspaceJoin,db:Session=Depends(get_db),t
     exist_workspace=crud.get_workspace_by_workspaceId(db=db,workspaceId=data.workspaceId)
     exist_user=crud.get_user_by_id(db=db,user_id=data.userId)
     if data.userId in exist_workspace.users:
-        return JSONResponse(content={"success":'false','message':'User already in workspace!',"data":{"workspace":{"userId":data.userId}}})
+        return {
+            "status": "error",
+            "message": f"member with name '{exist_user.name}' is aleardy here.",
+            "data": None
+        }
 
     new_workspace=crud.join_workspace(db=db,data=data)
-    return new_workspace
+    if new_workspace is None:
+        return {
+            "status": "error",
+            "message": f"member with id '{data.userId}' not  right.",
+            "data": None
+        }
+    if exist_user is None:
+        return {
+            "status": "error",
+            "message": f"member with id '{data.userId}' not  register.",
+            "data": None
+        }
+    
+    return {
+        "status": "success",
+        "message": "Member invite successfully.",
+        "data": new_workspace
+    }
 
 @app.get('/get_other_users')
 async def get_other_users(userId:str,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
@@ -171,7 +192,85 @@ async def update_workspace_name(data:schemas.WorkspaceRename,db:Session=Depends(
     return crud.update_workspace_by_workspaceId(db=db,data=data)
 @app.post('/workspace/create_channel')
 async def create_channel(data:schemas.ChannelCreate,db:Session=Depends(get_db)):
-    return crud.create_channel(db=db,data=data)
+    created_channel=crud.create_channel(db=db,data=data)
+    if created_channel is None:
+        return {
+            "status": "error",
+            "message": f"Channel with name '{data.name}' already exists.",
+            "data": None
+        }
+    return {
+        "status": "success",
+        "message": "Channel created successfully.",
+        "data": created_channel
+    }
+
+@app.get('/workspace/get_channel_by_channelId')
+async def get_channel_by_channelId(channelId:str,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    verify_token(token)
+    channel=crud.get_channel_by_channelId(db=db,channelId=channelId)
+    if channel is None:
+        return {
+            "status": "error",
+            "message": f"channel with id '{channelId}' not  created.",
+            "data": None
+        }
+    return {
+        "status": "success",
+        "message": "query channel successfully!",
+        "data": channel
+    }
+@app.delete('/workspace/delect_channel_by_channelId')
+async def delect_channel_by_channelId(channelId:str,workspaceId:str,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    verify_token(token)
+    workspace= crud.delete_channel_by_channelId(db=db,channelId=channelId,workspaceId=workspaceId)
+    if workspace is None:
+        return {
+            "status": "error",
+            "message": f"channel with id '{channelId}' not  created.",
+            "data": None
+        }
+    return {
+        "status": "success",
+        "message": "delete channel successfully!",
+        "data": workspace
+    }
+@app.post('/workspace/update_channel_name')
+async def update_workspace_name(data:schemas.ChanneleRename,db:Session=Depends(get_db),token:str=Depends(oauth2_scheme)):
+    verify_token(token)
+    channel= crud.update_channel_by_channelId(db=db,data=data)
+    if channel is None:
+        return {
+            "status": "error",
+            "message": f"channel with id '{data.channelId}' not  created.",
+            "data": None
+        }
+    return {
+        "status": "success",
+        "message": "update channel successfully!",
+        "data": channel
+    }
+
+@app.post('/channel/create_message')
+async def create_message(data:schemas.MessageCreate,db:Session=Depends(get_db)):
+
+    message= crud.create_message(data=data,db=db)
+    if message is None:
+        return {
+            "status": "error",
+            "message": f"message with id '{data.channelId}' not  created.",
+            "data": None
+        }
+    return {
+        "status": "success",
+        "message": "create  message successfully!",
+        "data": message
+    }
+
+@app.get('/channel/get_message_by_messageId')
+async def get_message_by_messageId(messageId:str,db:Session=Depends(get_db)):
+    return crud.get_message_by_messageId(messageId=messageId,db=db)
+
 @app.get("/")
 def index(token:str=Depends(oauth2_scheme)):
     email=verify_token(token)
